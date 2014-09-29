@@ -97,25 +97,33 @@ if (! class_exists('Class_WP_ezClasses_Theme_Head_Cleanup_1') ) {
 	 */
 	public function set_map(){
 	
+	  /*
+	   * - - IMPORTANT - -
+	   * Some might find this approach somewhat unorthodox. However - for example - an if ( isset($arr_set_map['rsd_link']['a']) ){}
+	   * is said to faster than if ( $arr_set_map['rsd_link'] == 'a' ) {}
+	   *
+	   * See method wp_head_cleanup() below for how this is being used. 
+	   */
+	
 	  $arr_set_map = array(
 	  
 		//set_a
-		'rsd_link'	 						=> 'a',
-		'wlwmanifest_link'					=> 'a',
-		'index_rel_link'					=> 'a',			
-		'wp_generator'						=> 'a',		
+		$arr_set_map['rsd_link']['a']							=> true,
+		$arr_set_map['wlwmanifest_link']['a']					=> true,
+		$arr_set_map['index_rel_link']['a']						=> true,		
+		$arr_set_map['wp_generator']['a']						=> true,	
 		
 		// set_b
-		'parent_post_rel_link'				=> 'b', 	// 10, 0
-		'start_post_rel_link' 				=> 'b',		// 10, 0
-		'adjacent_posts_rel_link_wp_head'	=> 'b',		// 10, 0	
-		'wp_shortlink_wp_head'				=> 'b', 	// 10, 0 
+		$arr_set_map['parent_post_rel_link']['b']				=> true, 	// 10, 0
+		$arr_set_map['start_post_rel_link']['b'] 				=> true,	// 10, 0
+		$arr_set_map['adjacent_posts_rel_link_wp_head']['b']	=> true,	// 10, 0	
+		$arr_set_map['wp_shortlink_wp_head']['b']				=> true, 	// 10, 0 
 		
 		// set_c
-		'feed_links'						=> 'c', 	// , 2);
+		$arr_set_map['feed_links']['c']							=> true, 	// , 2);
 		
 		//set_d
-		'feed_links_extra'					=> 'd', 		// ,3);
+		$arr_set_map['feed_links_extra']['d']					=> true, 	// ,3);
 	  
 	    );
 		
@@ -132,21 +140,27 @@ if (! class_exists('Class_WP_ezClasses_Theme_Head_Cleanup_1') ) {
 		
       // bang out what remains
 	  foreach ( $arr_wp_head_cleanup as $str_key => $bool_var ){
+	  
+	    /**
+		 * - - IMPORTANT - -
+		 * if elseif is said to be slight faster than Switch / Case.
+		 * Over-optimizing? Perhaps. But better habits are better than bad one, eh? :)
+		 */
 	    
 		// is there a set_map?  and is the bool true? 
 		if ( isset($arr_set_map[$str_key]) && $bool_var === true ){
 		
 		  // which set?
-		  if ( $arr_set_map[$str_key] == 'a'){
+		  if ( isset($arr_set_map[$str_key]['a']) ){
 		    remove_action('wp_head', $str_key );
 			
-		  } elseif ( $arr_set_map[$str_key] == 'b'){
+		  } elseif ( isset($arr_set_map[$str_key]['b']) ){
 		    remove_action('wp_head', $str_key, 10, 0);
 			
-		  } elseif ( $arr_set_map[$str_key] == 'c'){
+		  } elseif ( isset($arr_set_map[$str_key]['c']) ){
 		    remove_action('wp_head', $str_key, 2 );
 			
-		  } elseif ( $arr_set_map[$str_key] == 'd'){
+		  } elseif ( isset($arr_set_map[$str_key]['d']) ){
 		    remove_action('wp_head', $str_key, 3 );
 		  }
 	    }
