@@ -104,29 +104,25 @@ if (! class_exists('Class_WP_ezClasses_Theme_Head_Cleanup_1') ) {
 	   *
 	   * See method wp_head_cleanup() below for how this is being used. 
 	   */
-	
-	  $arr_set_map = array(
 	  
 		//set_a
-		$arr_set_map['rsd_link']['a']							=> true,
-		$arr_set_map['wlwmanifest_link']['a']					=> true,
-		$arr_set_map['index_rel_link']['a']						=> true,		
-		$arr_set_map['wp_generator']['a']						=> true,	
+		$arr_set_map['rsd_link']['a']							= true;
+		$arr_set_map['wlwmanifest_link']['a']					= true;
+		$arr_set_map['index_rel_link']['a']						= true;		
+		$arr_set_map['wp_generator']['a']						= true;	
 		
 		// set_b
-		$arr_set_map['parent_post_rel_link']['b']				=> true, 	// 10, 0
-		$arr_set_map['start_post_rel_link']['b'] 				=> true,	// 10, 0
-		$arr_set_map['adjacent_posts_rel_link_wp_head']['b']	=> true,	// 10, 0	
-		$arr_set_map['wp_shortlink_wp_head']['b']				=> true, 	// 10, 0 
+		$arr_set_map['parent_post_rel_link']['b']				= true; 	// 10, 0
+		$arr_set_map['start_post_rel_link']['b'] 				= true;	// 10, 0
+		$arr_set_map['adjacent_posts_rel_link_wp_head']['b']	= true;	// 10, 0	
+		$arr_set_map['wp_shortlink_wp_head']['b']				= true; 	// 10, 0 
 		
 		// set_c
-		$arr_set_map['feed_links']['c']							=> true, 	// , 2);
+		$arr_set_map['feed_links']['c']							= true; 	// , 2);
 		
 		//set_d
-		$arr_set_map['feed_links_extra']['d']					=> true, 	// ,3);
+		$arr_set_map['feed_links_extra']['d']					= true; 	// ,3);
 	  
-	    );
-		
 	  return  $arr_set_map;
 	}
 	
