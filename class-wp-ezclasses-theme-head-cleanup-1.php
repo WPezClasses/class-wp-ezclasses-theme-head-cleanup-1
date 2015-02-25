@@ -18,7 +18,8 @@
  * == Change Log == 
  *
  * -- 25 Feb 2015 - Ready
- * --- Updated to new ez standard(s)
+ * --- UPDATED: to new ez standard(s)
+ * --- ADDED: modify_wp_ver_css_js
  *
  * -- 27 September 2014 - Ready
  *
@@ -27,11 +28,6 @@
 /**
  * == TODO == 
  *
- * add_filter( 'style_loader_src', 'modify_wp_ver_css_js', 9999 ); // remove WP version from css
- * add_filter( 'script_loader_src', 'modify_wp_ver_css_js', 9999 ); // remove Wp version from scripts
- * 
- * remove WP version from scripts function 
- * modify_wp_ver_css_js( $src ) { if ( strpos( $src, 'ver=' ) ) $src = remove_query_arg( 'ver', $src ); return $src; }
  */
  
 
@@ -44,6 +40,8 @@ if (!defined('ABSPATH')) {
 if (! class_exists('Class_WP_ezClasses_Theme_Head_Cleanup_1') ) {
   class Class_WP_ezClasses_Theme_Head_Cleanup_1 extends Class_WP_ezClasses_Master_Singleton {
   
+    // http://php.net/manual/en/function.hash.php
+    protected $_str_hash_algo = 'md5';
     protected $_arr_init;
 	
 	protected function __construct() {
@@ -60,6 +58,12 @@ if (! class_exists('Class_WP_ezClasses_Theme_Head_Cleanup_1') ) {
 	  
 	  add_action( 'init', array($this, 'wp_head_cleanup'), 50);
 	  
+	//  if ( isset($this->_arr_init['modify_wp_ver']) && $this->_arr_init['modify_wp_ver'] === true  ){
+	  
+	    add_filter( 'style_loader_src', array($this, 'modify_wp_ver_css_js'), 9999 );
+	    add_filter( 'script_loader_src', array($this, 'modify_wp_ver_css_js'), 9999 );
+	 // }
+	  
 	}
 		
 	
@@ -71,6 +75,8 @@ if (! class_exists('Class_WP_ezClasses_Theme_Head_Cleanup_1') ) {
 	  $arr_defaults = array(
 
 		// 'wp_head' - start
+		
+		'modify_wp_ver'						=> false,
 		
 		//set_a
 		'rsd_link'	 						=> true, // http://www.themelab.com/remove-code-wordpress-header
@@ -165,6 +171,22 @@ if (! class_exists('Class_WP_ezClasses_Theme_Head_Cleanup_1') ) {
 		  }
 	    }
 	  } 
+	}
+	
+	/**
+	 * rather than totally remove the version (which helps the browser) let's just make it a bit more difficult to ID
+	 */
+	public function modify_wp_ver_css_js( $str_src ) { 
+	
+	  if ( ! isset($this->_arr_init['modify_wp_ver']) || $this->_arr_init['modify_wp_ver'] !== true  ){
+	    $str_src;
+	  }
+	
+	  if ( strpos( $str_src, 'ver=' ) &&  strpos( $str_src, '/wp-includes/' ) ) {
+	  //  $str_src = remove_query_arg( 'ver', $str_src );
+	    $str_src = str_replace('ver=','ver=' . hash($this->_str_hash_algo, date("Y")) .'-', $str_src);
+      }
+	  return $str_src; 
 	}
 	
   }
