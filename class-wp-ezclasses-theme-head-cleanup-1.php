@@ -17,17 +17,21 @@
 /**
  * == Change Log == 
  *
- * --- 27 September 2014 - Ready
+ * -- 25 Feb 2015 - Ready
+ * --- Updated to new ez standard(s)
+ *
+ * -- 27 September 2014 - Ready
  *
  */
  
 /**
  * == TODO == 
  *
- * add_filter( 'style_loader_src', 'remove_wp_ver_css_js', 9999 ); // remove WP version from css
- * add_filter( 'script_loader_src', 'remove_wp_ver_css_js', 9999 ); // remove Wp version from scripts
+ * add_filter( 'style_loader_src', 'modify_wp_ver_css_js', 9999 ); // remove WP version from css
+ * add_filter( 'script_loader_src', 'modify_wp_ver_css_js', 9999 ); // remove Wp version from scripts
  * 
- * remove WP version from scripts function remove_wp_ver_css_js( $src ) { if ( strpos( $src, 'ver=' ) ) $src = remove_query_arg( 'ver', $src ); return $src; }
+ * remove WP version from scripts function 
+ * modify_wp_ver_css_js( $src ) { if ( strpos( $src, 'ver=' ) ) $src = remove_query_arg( 'ver', $src ); return $src; }
  */
  
 
@@ -49,10 +53,10 @@ if (! class_exists('Class_WP_ezClasses_Theme_Head_Cleanup_1') ) {
 	/**
 	 *
 	 */
-	public function ezc_init($arr_args = ''){
+	public function ez__construct($arr_args = ''){
 	
 	//  $arr_init_defaults = $this->init_defaults();
-	  $this->_arr_init = WP_ezMethods::ez_array_merge(array($this->init_defaults(), $arr_args));
+	  $this->_arr_init = WPezHelpers::ez_array_merge(array($this->init_defaults(), $arr_args));
 	  
 	  add_action( 'init', array($this, 'wp_head_cleanup'), 50);
 	  

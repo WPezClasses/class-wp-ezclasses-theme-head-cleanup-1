@@ -9,7 +9,7 @@
 
 Presuming you're using the WPezClasses framework as recommended (i.e., autoload, etc) then just add this line to your customizations plugin:
 
-##### Class_WP_ezClasses_Theme_Head_Cleanup_1::ezc_get_instance();
+##### Class_WP_ezClasses_Theme_Head_Cleanup_1::ez_new();
 
 That's it. ezDone!
 
